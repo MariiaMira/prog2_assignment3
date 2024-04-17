@@ -15,6 +15,11 @@ public class Exercise3 {
         //app.exportRecordings("recording_output.txt");
         //app.importSales("sales_input.bin");
 		System.out.println(app.getRecordings());
+		for (Recording rec : app.getRecordings()){
+			System.out.println(rec.getArtist());
+			System.out.println(rec.getTitle());
+			System.out.println(rec.getYear());
+		}
     }
 
 	public void exportRecordings(String fileName) {
@@ -36,7 +41,7 @@ public class Exercise3 {
 					genres.add(reader.readLine().trim());
 				}
 
-				recordings.add(new Recording(artist, title, year, genres));
+				recordings.add(new Recording(title, artist, year, genres));
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("The file " + fileName + " was not found.");
