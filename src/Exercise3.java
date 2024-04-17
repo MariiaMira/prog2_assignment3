@@ -1,9 +1,9 @@
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class Exercise3 {
 
@@ -14,8 +14,28 @@ public class Exercise3 {
 	}
 
 	public void importRecordings(String fileName) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			int numberOfRecordings = Integer.parseInt(reader.readLine().trim());
+			for (int i = 0; i < numberOfRecordings; i++) {
+				String[] details = reader.readLine().trim().split(";");
+				String artist = details[0];
+				String title = details[1];
+				int year = Integer.parseInt(details[2]);
 
-	}
+				int genreCount = Integer.parseInt(reader.readLine().trim());
+				Set<String> genres = new HashSet<>();
+				for (int j = 0; j < genreCount; j++) {
+					genres.add(reader.readLine().trim());
+				}
+
+				recordings.add(new Recording(artist, title, year, genres));
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("The file " + fileName + " was not found.");
+		} catch (IOException e) {
+			System.out.println("An error occurred while reading the file " + fileName);
+		}
+    }
 
 	public Map<Integer, Double> importSales(String fileName) {
 		return null;
