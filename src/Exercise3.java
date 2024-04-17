@@ -9,6 +9,14 @@ public class Exercise3 {
 
 	private final List<Recording> recordings = new ArrayList<>();
 
+	public static void main(String[] args) {
+		Exercise3 app = new Exercise3();
+        app.importRecordings("recording_input.txt");
+        //app.exportRecordings("recording_output.txt");
+        //app.importSales("sales_input.bin");
+		System.out.println(app.getRecordings());
+    }
+
 	public void exportRecordings(String fileName) {
 
 	}
