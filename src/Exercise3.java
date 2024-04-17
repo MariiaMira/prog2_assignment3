@@ -1,8 +1,4 @@
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Exercise3 {
@@ -12,7 +8,7 @@ public class Exercise3 {
 	public static void main(String[] args) {
 		Exercise3 app = new Exercise3();
         app.importRecordings("recording_input.txt");
-        //app.exportRecordings("recording_output.txt");
+        app.exportRecordings("recording_output.txt");
         //app.importSales("sales_input.bin");
 		System.out.println(app.getRecordings());
 		for (Recording rec : app.getRecordings()){
@@ -23,8 +19,37 @@ public class Exercise3 {
     }
 
 	public void exportRecordings(String fileName) {
-
+		try {
+			PrintWriter writer = new PrintWriter(new FileWriter(fileName));
+			StringBuilder allRecords = new StringBuilder();
+			for (Recording r : recordings) {
+				String[] genres = r.getGenre().toArray(new String[0]);
+				StringBuilder sb = new StringBuilder();
+				sb.append("<recording>\n")
+						.append("\t<artist>").append(r.getArtist()).append("</artist>\n")
+						.append("\t<title>").append(r.getTitle()).append("</title>\n")
+						.append("\t<year>").append(r.getYear()).append("</year>\n")
+						.append("\t<genres>\n")
+						.append(printGenres(genres))
+						.append("\t</genres>\n")
+						.append("</recording>\n");
+				allRecords.append(sb);
+			}
+			writer.write(allRecords.toString()); // writes to file
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+
+	private String printGenres(String[] g) { //slippa for loop
+		StringBuilder sb = new StringBuilder();
+		for (String genre : g) {
+			sb.append(String.format("\t\t<genre>%s</genre>\n", genre));
+		}
+		return sb.toString();
+	}
+
 
 	public void importRecordings(String fileName) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
