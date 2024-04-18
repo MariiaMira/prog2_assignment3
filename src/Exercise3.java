@@ -16,6 +16,9 @@ public class Exercise3 {
 			System.out.println(rec.getTitle());
 			System.out.println(rec.getYear());
 		}
+
+		System.out.println("----------------------");
+		app.importSales("sales_input.bin");
     }
 
 	public void exportRecordings(String fileName) {
@@ -76,7 +79,50 @@ public class Exercise3 {
     }
 
 	public Map<Integer, Double> importSales(String fileName) {
-		return null;
+		Map<Integer, Double> sales = new HashMap<>();
+		DataInputStream dis = null;
+
+		try{
+			dis = new DataInputStream( new FileInputStream(fileName));
+
+			int count = dis.readInt();
+			double[] values = new double[count];
+
+			String dateYear;
+			String dateMonth;
+			double value;
+
+			for(int i = 0;i<count;i++){
+				dateYear = String.valueOf(dis.readInt());
+				dateMonth = String.valueOf(dis.readInt());
+				String dateDay = String.valueOf(dis.readInt());
+				value = dis.readDouble();
+				//System.out.println(dateYear + " " + dateMonth + " " +dateDay+ " " + value);
+				if(dateMonth.length()<2){
+					dateMonth = "0"+dateMonth;
+				}
+				String dateString = dateYear+dateMonth;
+				int date = Integer.valueOf(dateString);
+
+				if(sales.containsKey(date)){
+					sales.replace(date, sales.get(date)+value);
+				}
+				else {
+					sales.put(date, value);
+				}
+			}
+			dis.close();
+
+			System.out.println(sales);
+
+		}
+		catch(FileNotFoundException fe){
+			fe.printStackTrace();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		return sales;
 	}
 
 	public List<Recording> getRecordings() {
